@@ -6,49 +6,40 @@
     <title>Bizim Günlüğümüz ❤️</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        :root { --bg-color: #fdf6f0; --accent: #ff7675; --text: #2d3436; }
-        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg-color); color: var(--text); padding: 20px; display: flex; flex-direction: column; align-items: center; }
-        .header { text-align: center; margin-bottom: 25px; }
-        .timer-box { background: white; padding: 20px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; width: 100%; max-width: 500px; margin-bottom: 25px; border: 2px solid #ffeaa7; }
-        .timer-box h2 { color: var(--accent); margin: 0; font-size: 1.2rem; }
-        .timeline { width: 100%; max-width: 500px; }
-        .card { background: white; padding: 20px; border-radius: 15px; margin-bottom: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); border-left: 5px solid var(--accent); }
-        .card h3 { margin: 0 0 5px 0; color: var(--accent); }
-        .card small { color: #636e72; font-size: 0.8rem; }
-        .input-box { background: white; padding: 20px; border-radius: 20px; width: 100%; max-width: 500px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        input, textarea { width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #dfe6e9; border-radius: 10px; box-sizing: border-box; }
-        button { width: 100%; padding: 12px; background: var(--accent); color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
+        body { font-family: sans-serif; background: #fdf6f0; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+        .card { background: white; padding: 15px; border-radius: 10px; margin-bottom: 10px; width: 100%; max-width: 500px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        input, textarea { width: 100%; margin-bottom: 10px; padding: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+        button { width: 100%; padding: 10px; background: #ff7675; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
-    <div class="header"><h1>Niyaz ❤️ Eslem</h1></div>
-    <div class="timer-box">
-        <h2 id="counter">Yükleniyor...</h2>
-    </div>
-    <div class="timeline" id="notes"></div>
-    <div class="input-box">
+    <h1>Niyaz ❤️ Eslem</h1>
+    <div id="notes"></div>
+    <div class="card">
         <input type="text" id="title" placeholder="Başlık...">
-        <textarea id="content" placeholder="Anımızı yazalım..."></textarea>
-        <button onclick="saveNote()">Hatıra Ekle ✨</button>
+        <textarea id="content" placeholder="Anını yaz..."></textarea>
+        <button onclick="addNote()">Günlüğe Ekle ✨</button>
     </div>
     <script>
         const sb = supabase.createClient('https://kodznxbzuxdyhukkrsd.supabase.co', 'sb_publishable_MYEsLUqJvZvKW1dwVyqgew_LukNyN90');
-        const start = new Date(2026, 5, 19);
-        setInterval(() => {
-            const diff = new Date() - start;
-            const d = Math.floor(diff / (1000*60*60*24));
-            const h = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
-            document.getElementById('counter').innerText = `Beraberliğimiz: ${d} Gün, ${h} Saat geçti ❤️`;
-        }, 1000);
-        async function fetchNotes() {
-            const { data } = await sb.from('gunluk_notlari').select('*').order('id', { ascending: false });
-            document.getElementById('notes').innerHTML = data.map(n => `<div class="card"><small>${n.tarih}</small><h3>${n.baslik}</h3><p>${n.icerik}</p></div>`).join('');
+        
+        async function load() {
+            const { data, error } = await sb.from('gunluk_notlari').select('*').order('id', { ascending: false });
+            if (data) {
+                document.getElementById('notes').innerHTML = data.map(n => 
+                    `<div class="card"><strong>${n.baslik}</strong><p>${n.icerik}</p><small>${n.tarih}</small></div>`
+                ).join('');
+            }
         }
-        async function saveNote() {
-            await sb.from('gunluk_notlari').insert([{ tarih: new Date().toLocaleDateString('tr-TR'), baslik: document.getElementById('title').value, icerik: document.getElementById('content').value }]);
+        
+        async function addNote() {
+            const t = document.getElementById('title').value;
+            const c = document.getElementById('content').value;
+            await sb.from('gunluk_notlari').insert([{ tarih: new Date().toLocaleDateString('tr-TR'), baslik: t, icerik: c }]);
             location.reload();
         }
-        fetchNotes();
+        
+        load();
     </script>
 </body>
 </html>
