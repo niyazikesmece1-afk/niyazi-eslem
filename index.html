@@ -58,7 +58,7 @@ font-weight:bold;
 <p>Tanışma: <b>16 Haziran 2026</b></p>
 
 <p>Sevgili Olma: <b>19 Haziran 2026</b></p>
-
+<p id="gunSayaci"></p>
 <h2>📖 Bizim Günlüğümüz</h2>
   <textarea id="gunluk"
 placeholder="Bugün hissettiklerini yaz..."></textarea>
@@ -110,18 +110,17 @@ window.onload = function () {
   document.getElementById("gun").innerHTML = gun;
 };
 </
-  
-<p>💖 Birlikte geçen gün: <b id="gun"></b></p>
-
-<script>
+  <script>
 const baslangic = new Date("2026-06-19");
 
-function guncelleGun(){
+function guncelle() {
   const bugun = new Date();
   const fark = bugun - baslangic;
-  const gun = Math.floor(fark / (1000*60*60*24));
-  document.getElementById("gun").innerText = gun;
+  const gun = Math.floor(fark / (1000 * 60 * 60 * 24));
+
+  document.getElementById("gunSayaci").innerHTML =
+    "❤️ Birlikte " + gun + " gündür sevgiliyiz ❤️";
 }
 
-guncelleGun();
+guncelle();
 </script>
