@@ -53,12 +53,11 @@
     </div>
 
     <script>
-        // Kesinleşen ve güncellenen Supabase bağlantı bilgileri
         const SUPABASE_URL = 'https://kodznxbzuxdyhukkrsd.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_MYEsLUqJvZvKW1dwVyqgew_LukNyN90';
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // Sayaç İşlemleri (19 Haziran 2026 Başlangıç)
+        // Sayaç İşlemleri
         const startDate = new Date(2026, 5, 19); 
         function updateCounter() {
             const now = new Date();
@@ -71,13 +70,13 @@
         }
         setInterval(updateCounter, 1000);
 
-        // Veri Tabanından Notları Çekme (Supabase)
+        // Veri Tabanından Notları Çekme (Tablo adı gunluk_notlari olarak düzeltildi)
         async function loadNotes() {
             const timeline = document.getElementById('diary-timeline');
             timeline.innerHTML = 'Yükleniyor...';
 
             const { data: notes, error } = await supabaseClient
-                .from('günlük_notlari')
+                .from('gunluk_notlari')
                 .select('*')
                 .order('id', { ascending: false });
 
@@ -111,7 +110,7 @@
             });
         }
 
-        // Supabase'e Yeni Not Ekleme
+        // Supabase'e Yeni Not Ekleme (Tablo adı gunluk_notlari olarak düzeltildi)
         async function addNote() {
             const titleInput = document.getElementById('note-title');
             const contentInput = document.getElementById('note-content');
@@ -125,7 +124,7 @@
             const dateStr = today.getDate() + ' ' + today.toLocaleString('tr-TR', { month: 'long' }) + ' ' + today.getFullYear();
 
             const { error } = await supabaseClient
-                .from('günlük_notlari')
+                .from('gunluk_notlari')
                 .insert([
                     { tarih: dateStr, baslik: titleInput.value, icerik: contentInput.value }
                 ]);
