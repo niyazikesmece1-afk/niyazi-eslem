@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Niyazi ❤️ Eslem</title>
+
+<style>
+body{
+margin:0;
+padding:20px;
+font-family:Arial,sans-serif;
+background:#ffdbe5;
+text-align:center;
+}
+
+.kutu{
+max-width:500px;
+margin:auto;
+background:white;
+padding:20px;
+border-radius:20px;
+box-shadow:0 0 15px rgba(0,0,0,.2);
+}
+
+textarea{
+width:100%;
+height:150px;
+padding:10px;
+border-radius:10px;
+font-size:16px;
+}
+
+button{
+margin-top:15px;
+padding:12px 20px;
+background:#ff4d6d;
+color:white;
+border:none;
+border-radius:10px;
+font-size:18px;
+}
+
+#mesaj{
+margin-top:15px;
+color:#ff4d6d;
+font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="kutu">
+
+<h1>💖 Niyazi ❤️ Eslem 💖</h1>
+
+<p>Tanışma: <b>16 Haziran 2026</b></p>
+
+<p>Sevgili Olma: <b>19 Haziran 2026</b></p>
+
+<h2>📖 Bizim Günlüğümüz</h2>
+  <textarea id="gunluk"
+placeholder="Bugün hissettiklerini yaz..."></textarea>
+
+<br><br>
+
+<button onclick="kaydet()">
+Kaydet ❤️
+</button>
+
+<p id="mesaj"></p>
+
+</div>
+
+<script>
+
+document.getElementById("gunluk").value =
+localStorage.getItem("gunluk") || "";
+
+function kaydet(){
+
+localStorage.setItem(
+"gunluk",
+document.getElementById("gunluk").value
+);
+
+document.getElementById("mesaj").innerHTML =
+"❤️ Günlük başarıyla kaydedildi.";
+
+}
+<script>
+function kaydet() {
+  const yazi = document.getElementById("gunluk").value;
+  localStorage.setItem("gunluk", yazi);
+  document.getElementById("mesaj").innerHTML =
+    "❤️ Günlüğünüz kaydedildi!";
+}
+
+window.onload = function () {
+  const eski = localStorage.getItem("gunluk");
+  if (eski) {
+    document.getElementById("gunluk").value = eski;
+  }
+
+  const baslangic = new Date("2026-06-19");
+  const bugun = new Date();
+  const gun = Math.floor((bugun - baslangic) / (1000 * 60 * 60 * 24));
+
+  document.getElementById("gun").innerHTML = gun;
+};
+</
